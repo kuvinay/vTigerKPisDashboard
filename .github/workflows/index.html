@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>VTiger Dashboard | Modern App Theme</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Flatpickr for Beautiful Date Selection -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#4F46E5",
+                        "primary-light": "#EEF2FF",
+                        secondary: "#64748B",
+                        background: "#F8FAFC",
+                        surface: "#FFFFFF",
+                        success: "#10B981",
+                        "success-light": "#ECFDF5",
+                        warning: "#F59E0B",
+                        "warning-light": "#FFFBEB",
+                        danger: "#EF4444",
+                        "danger-light": "#FEF2F2",
+                        info: "#0EA5E9",
+                        "info-light": "#F0F9FF",
+                        "slate-100": "#F1F5F9",
+                        "slate-200": "#E2E8F0",
+                        "slate-300": "#CBD5E1",
+                        "slate-800": "#1E293B"
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"],
+                    },
+                    boxShadow: {
+                        "soft": "0 4px 20px -2px rgba(0,0,0,0.03)",
+                        "hover": "0 10px 25px -5px rgba(79,70,229,0.08)",
+                        "inner-soft": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)"
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: theme('colors.background');
+        }
+        .material-symbols-rounded { 
+            font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24; 
+        }
+        
+        .app-card {
+            background-color: theme('colors.surface');
+            border-radius: 4px; /* Sharp corners */
+            box-shadow: theme('boxShadow.soft');
+            border: 1px solid theme('colors.slate-200');
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .app-card:hover {
+            box-shadow: theme('boxShadow.hover');
+            border-color: theme('colors.primary-light'); 
+        }
+
+        .list-row {
+            background-color: #FFFFFF;
+            border: 1px solid theme('colors.slate-100');
+            border-radius: 4px; /* Sharp corners */
+            transition: all 0.2s ease;
+        }
+        .list-row:hover {
+            border-color: theme('colors.primary-light');
+            background-color: theme('colors.primary-light');
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.05);
+        }
+
+        .progress-bar-fill { transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .number-animate { transition: opacity 0.3s ease; }
+
+        .soft-pill {
+            border-radius: 4px; /* Sharp corners */
+            padding: 4px 12px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: theme('colors.slate-300'); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.slate-400'); }
+        
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: theme('colors.slate-800');
+        }
+
+        /* Customizing Flatpickr */
+        .flatpickr-calendar { font-family: 'Inter', sans-serif !important; border-radius: 4px !important; border: 1px solid #e2e8f0 !important; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1) !important;}
+    </style>
+</head>
+<body class="text-slate-800 bg-background font-sans antialiased relative">
+
+    <header class="flex justify-between items-center px-6 py-3 bg-white/90 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200/50">
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2">
+                <!-- Image Logo instead of CSS Icon -->
+                <img src="https://ui-avatars.com/api/?name=VT&background=4F46E5&color=fff&rounded=false&bold=true&font-size=0.4" alt="Logo" class="w-8 h-8 rounded-sm shadow-sm">
+                <h2 class="text-lg font-extrabold tracking-tight text-slate-800">VTiger Dashboard</h2>
+            </div>
+            
+            <div class="relative group hidden lg:block ml-2">
+                <span class="material-symbols-rounded absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+                <input class="bg-slate-50 border border-slate-200 rounded-sm pl-10 pr-4 py-1.5 text-xs w-80 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all outline-none shadow-inner-soft font-semibold" placeholder="Search accounts, leads, or metrics..." type="text" />
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <!-- Beautiful Custom Date Range Picker -->
+            <div class="bg-slate-50 rounded-sm shadow-inner-soft border border-slate-200 px-3 py-1.5 flex items-center gap-2 hover:border-primary/50 transition-colors group cursor-pointer">
+                <span class="material-symbols-rounded text-[16px] text-slate-400 group-hover:text-primary transition-colors">calendar_month</span>
+                <input type="text" id="dash-date-range" class="border-none bg-transparent p-0 text-xs font-bold text-slate-700 focus:ring-0 cursor-pointer outline-none w-[175px]" placeholder="Select Dates...">
+            </div>
+
+            <div class="flex items-center gap-3 border-l border-slate-200 pl-3">
+                <!-- Smart Notifications Wrapper -->
+                <div class="relative" id="notification-wrapper">
+                    <button onclick="toggleNotifications()" class="w-8 h-8 rounded-sm bg-slate-50 border border-slate-200 flex items-center justify-center text-secondary hover:text-primary hover:border-primary/50 transition-all shadow-sm relative">
+                        <span class="material-symbols-rounded text-[18px]">notifications</span>
+                        <!-- Notification Badge -->
+                        <span id="notif-badge" class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-danger text-white text-[9px] font-bold rounded-sm flex items-center justify-center shadow-sm hidden">0</span>
+                    </button>
+                    
+                    <!-- Dropdown Menu -->
+                    <div id="notif-dropdown" class="absolute right-0 top-10 w-72 bg-white border border-slate-200 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] rounded-sm hidden z-[100] flex flex-col max-h-[400px]">
+                        <div class="px-4 py-3 border-b border-slate-100 flex justify-between items-center bg-slate-50/80">
+                            <h4 class="text-xs font-extrabold text-slate-800 flex items-center gap-1.5">
+                                <span class="material-symbols-rounded text-danger text-[16px]">warning</span>
+                                Manager Alerts
+                            </h4>
+                            <span id="notif-count" class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">0 Alerts</span>
+                        </div>
+                        <div id="notif-list" class="overflow-y-auto flex-1 p-3 space-y-2">
+                            <!-- Populated via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 px-3 py-1.5 rounded-sm text-xs font-bold shadow-sm border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-100 transition-colors">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=4F46E5&color=fff&rounded=false" alt="User" class="w-5 h-5 rounded-sm">
+                    <span>Admin</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="px-6 pb-10 mx-auto max-w-[1600px] w-full">
+        
+        <header class="mb-4 mt-4 flex justify-between items-end">
+            <div>
+                <h1 class="text-2xl font-extrabold tracking-tight mb-0.5 text-slate-800">Overview</h1>
+                <p class="text-secondary text-xs font-semibold">Welcome back, here's your performance snapshot.</p>
+            </div>
+            
+            <!-- Report Button -->
+            <button onclick="openReport()" class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 font-bold text-xs rounded-sm shadow-sm hover:bg-slate-50 hover:text-primary transition-all hover:shadow-md group">
+                <span class="material-symbols-rounded text-[16px] text-slate-400 group-hover:text-primary transition-colors">table_chart</span>
+                Detailed Report
+            </button>
+        </header>
+
+        <!-- Section 1: Top KPIs -->
+        <section class="mb-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                
+                <!-- Leads KPI -->
+                <div class="rounded-sm p-4 flex flex-col bg-indigo-100 border border-indigo-200 hover:border-indigo-400 transition-all shadow-sm hover:shadow-md">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="w-10 h-10 rounded-sm bg-white flex items-center justify-center text-indigo-600 shadow-sm">
+                            <span class="material-symbols-rounded text-xl">group</span>
+                        </div>
+                        <p class="text-2xl font-black text-slate-800 number-animate leading-none text-right" data-stat="execTotalLeads">1,420</p>
+                    </div>
+                    <div class="flex-1 flex flex-col">
+                        <div class="mb-3">
+                            <p class="text-xs font-extrabold text-slate-700 uppercase tracking-wide">Total Leads</p>
+                        </div>
+                        
+                        <div class="flex flex-col gap-1.5 pt-2 border-t border-indigo-200 mt-auto">
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last Week</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="leads_lw">280</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last 4 Wks</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="leads_l4w">1,420</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last 8 Wks</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="leads_l8w">2,900</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Opportunities KPI -->
+                <div class="rounded-sm p-4 flex flex-col bg-sky-100 border border-sky-200 hover:border-sky-400 transition-all shadow-sm hover:shadow-md">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="w-10 h-10 rounded-sm bg-white flex items-center justify-center text-sky-600 shadow-sm">
+                            <span class="material-symbols-rounded text-xl">insights</span>
+                        </div>
+                        <p class="text-2xl font-black text-slate-800 number-animate leading-none text-right" data-stat="execTotalOpps">154</p>
+                    </div>
+                    <div class="flex-1 flex flex-col">
+                        <div class="mb-3">
+                            <p class="text-xs font-extrabold text-slate-700 uppercase tracking-wide">Total Opps</p>
+                        </div>
+                        
+                        <div class="flex flex-col gap-1.5 pt-2 border-t border-sky-200 mt-auto">
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last Week</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="opps_lw">48</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last 4 Wks</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="opps_l4w">154</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last 8 Wks</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="opps_l8w">310</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calls KPI -->
+                <div class="rounded-sm p-4 flex flex-col bg-emerald-100 border border-emerald-200 hover:border-emerald-400 transition-all shadow-sm hover:shadow-md">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="w-10 h-10 rounded-sm bg-white flex items-center justify-center text-emerald-600 shadow-sm">
+                            <span class="material-symbols-rounded text-xl">call</span>
+                        </div>
+                        <p class="text-2xl font-black text-slate-800 number-animate leading-none text-right" data-stat="execTotalCalls">1,840</p>
+                    </div>
+                    <div class="flex-1 flex flex-col">
+                        <div class="mb-3">
+                            <p class="text-xs font-extrabold text-slate-700 uppercase tracking-wide">Total Calls</p>
+                        </div>
+                        
+                        <div class="flex flex-col gap-1.5 pt-2 border-t border-emerald-200 mt-auto">
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last Week</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="calls_lw">480</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last 4 Wks</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="calls_l4w">1,840</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last 8 Wks</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="calls_l8w">3,500</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emails KPI -->
+                <div class="rounded-sm p-4 flex flex-col bg-amber-100 border border-amber-200 hover:border-amber-400 transition-all shadow-sm hover:shadow-md">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="w-10 h-10 rounded-sm bg-white flex items-center justify-center text-amber-600 shadow-sm">
+                            <span class="material-symbols-rounded text-xl">mail</span>
+                        </div>
+                        <p class="text-2xl font-black text-slate-800 number-animate leading-none text-right" data-stat="execTotalEmails">4,210</p>
+                    </div>
+                    <div class="flex-1 flex flex-col">
+                        <div class="mb-3">
+                            <p class="text-xs font-extrabold text-slate-700 uppercase tracking-wide">Total Emails</p>
+                        </div>
+                        
+                        <div class="flex flex-col gap-1.5 pt-2 border-t border-amber-200 mt-auto">
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last Week</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="emails_lw">1,120</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last 4 Wks</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="emails_l4w">4,210</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last 8 Wks</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="emails_l8w">8,050</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SMS KPI -->
+                <div class="rounded-sm p-4 flex flex-col bg-fuchsia-100 border border-fuchsia-200 hover:border-fuchsia-400 transition-all shadow-sm hover:shadow-md">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="w-10 h-10 rounded-sm bg-white flex items-center justify-center text-fuchsia-600 shadow-sm">
+                            <span class="material-symbols-rounded text-xl">sms</span>
+                        </div>
+                        <p class="text-2xl font-black text-slate-800 number-animate leading-none text-right" data-stat="execTotalSms">380</p>
+                    </div>
+                    <div class="flex-1 flex flex-col">
+                        <div class="mb-3">
+                            <p class="text-xs font-extrabold text-slate-700 uppercase tracking-wide">Total SMS</p>
+                        </div>
+                        
+                        <div class="flex flex-col gap-1.5 pt-2 border-t border-fuchsia-200 mt-auto">
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last Week</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="sms_lw">380</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last 4 Wks</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="sms_l4w">1,250</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[9px]">
+                                <span class="font-bold text-slate-500 uppercase tracking-wide">Last 8 Wks</span>
+                                <span class="font-extrabold text-slate-800 number-animate" data-stat="sms_l8w">2,400</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 2: Lead Intelligence -->
+        <section class="mb-6">
+            <div class="flex items-center gap-2 mb-3">
+                <div class="w-8 h-8 rounded-sm bg-indigo-50 text-indigo-500 flex items-center justify-center shadow-sm">
+                    <span class="material-symbols-rounded text-[18px]">manage_accounts</span>
+                </div>
+                <h3 class="section-title">Sales Person Details</h3>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
+                
+                <!-- Left Column: Source and Opportunities -->
+                <div class="app-card p-5 bg-white lg:col-span-4 flex flex-col">
+                    
+                    <!-- Leads by Source Block -->
+                    <div class="flex-1 mb-5">
+                        <p class="text-xs font-extrabold text-slate-800 mb-3">Leads by Source</p>
+                        <div class="space-y-4 flex flex-col justify-center">
+                            <div class="cursor-pointer group" onclick="showDetails('Engagement Leads', 'source', 'Engagement')">
+                                <div class="flex justify-between text-xs mb-1.5 font-bold text-slate-700"><span class="group-hover:text-primary transition-colors">Engagement</span><span class="number-animate" data-stat="leadRaw">1,420</span></div>
+                                <div class="h-2 w-full bg-slate-100 rounded-sm overflow-hidden shadow-inner-soft"><div class="h-full bg-primary progress-bar-fill w-full rounded-sm"></div></div>
+                            </div>
+                            <div class="cursor-pointer group" onclick="showDetails('Trade Show Leads', 'source', 'Trade Show')">
+                                <div class="flex justify-between text-xs mb-1.5 font-bold text-slate-700"><span class="group-hover:text-primary transition-colors">Trade Show</span><span class="number-animate" data-stat="leadMQL">380</span></div>
+                                <div class="h-2 w-full bg-slate-100 rounded-sm overflow-hidden shadow-inner-soft"><div class="h-full bg-info progress-bar-fill rounded-sm" style="width: 26%"></div></div>
+                            </div>
+                            <div class="cursor-pointer group" onclick="showDetails('Appointment Leads', 'source', 'Appointment')">
+                                <div class="flex justify-between text-xs mb-1.5 font-bold text-slate-700"><span class="group-hover:text-primary transition-colors">Appointment</span><span class="number-animate" data-stat="leadSQL">94</span></div>
+                                <div class="h-2 w-full bg-slate-100 rounded-sm overflow-hidden shadow-inner-soft"><div class="h-full bg-warning progress-bar-fill rounded-sm" style="width: 6%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Opportunities Block -->
+                    <div class="border-t border-slate-100 pt-5 flex-1">
+                        <p class="text-xs font-extrabold text-slate-800 mb-3">Opportunities</p>
+                        <div class="space-y-4 flex flex-col justify-center">
+                            <div class="cursor-pointer group" onclick="showDetails('Closed Won', 'status', 'Closed Won')">
+                                <div class="flex justify-between text-xs mb-1.5 font-bold text-slate-700"><span class="group-hover:text-success transition-colors">Closed Won</span><span class="number-animate" data-stat="pipeWon">64</span></div>
+                                <div class="h-2 w-full bg-slate-100 rounded-sm overflow-hidden shadow-inner-soft"><div class="h-full bg-success progress-bar-fill rounded-sm" style="width: 67%;"></div></div>
+                            </div>
+                            <div class="cursor-pointer group" onclick="showDetails('Closed Lost', 'status', 'Closed Lost')">
+                                <div class="flex justify-between text-xs mb-1.5 font-bold text-slate-700"><span class="group-hover:text-danger transition-colors">Closed Lost</span><span class="number-animate" data-stat="pipeLost">31</span></div>
+                                <div class="h-2 w-full bg-slate-100 rounded-sm overflow-hidden shadow-inner-soft"><div class="h-full bg-danger progress-bar-fill rounded-sm" style="width: 33%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- Right Column: Sales Person Tracker -->
+                <div class="app-card p-5 bg-white lg:col-span-8 flex flex-col justify-start overflow-hidden">
+                    <p class="text-xs font-extrabold text-slate-800 mb-3 px-1">Sales Activity & Performance Tracker</p>
+                    
+                    <div class="overflow-x-auto w-full pb-2">
+                        <div class="min-w-[950px] flex flex-col gap-2">
+                            <!-- Table Header -->
+                            <div class="px-4 py-2 grid grid-cols-12 items-end gap-2 border-b border-slate-200 mb-1">
+                                <div class="col-span-3 pb-1">
+                                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Representative</p>
+                                </div>
+                                <div class="col-span-4 flex flex-col text-center border-x border-slate-200 px-2">
+                                    <span class="text-[9px] font-extrabold text-slate-800 uppercase tracking-widest mb-1 border-b border-slate-100 pb-1">Leads</span>
+                                    <div class="grid grid-cols-4 gap-1 w-full text-[8px] font-bold text-slate-400 uppercase">
+                                        <span>Total</span><span>Engage</span><span>Trade</span><span>Appt</span>
+                                    </div>
+                                </div>
+                                <div class="col-span-3 flex flex-col text-center pr-2">
+                                    <span class="text-[9px] font-extrabold text-slate-800 uppercase tracking-widest mb-1 border-b border-slate-100 pb-1">Opportunities</span>
+                                    <div class="grid grid-cols-4 gap-1 w-full text-[8px] font-bold text-slate-400 uppercase">
+                                        <span>Total</span><span class="text-success">Won</span><span class="text-primary">Proc</span><span class="text-danger">Lost</span>
+                                    </div>
+                                </div>
+                                <div class="col-span-2 flex flex-col text-center border-l border-slate-200 pl-2">
+                                    <span class="text-[9px] font-extrabold text-slate-800 uppercase tracking-widest mb-1 border-b border-slate-100 pb-1">Activity</span>
+                                    <div class="grid grid-cols-3 gap-1 w-full text-[8px] font-bold text-slate-400 uppercase">
+                                        <span>Call</span><span>Mail</span><span>SMS</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Rep 1 Row -->
+                            <div class="px-4 py-3 grid grid-cols-12 items-center gap-2 list-row group">
+                                <div class="col-span-3 flex items-center gap-3">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jane Doe" class="w-8 h-8 shadow-sm rounded-sm object-cover">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-extrabold text-slate-800 group-hover:text-primary transition-colors">Jane Doe</span>
+                                        <span class="text-[8px] font-bold text-secondary uppercase tracking-widest">Senior Rep</span>
+                                    </div>
+                                </div>
+                                <div class="col-span-4 grid grid-cols-4 gap-1 text-center font-extrabold items-center border-x border-slate-100 px-2">
+                                    <span class="text-xs text-slate-800 number-animate" data-stat="leadRep1">450</span>
+                                    <span class="text-[10px] text-slate-500 number-animate" data-stat="leadRep1_eng">220</span>
+                                    <span class="text-[10px] text-slate-500 number-animate" data-stat="leadRep1_trade">180</span>
+                                    <span class="text-[10px] text-slate-500 number-animate" data-stat="leadRep1_appt">50</span>
+                                </div>
+                                <div class="col-span-3 grid grid-cols-4 gap-1 text-center font-extrabold items-center pr-2">
+                                    <span class="text-xs text-slate-800 number-animate" data-stat="oppRep1_total">64</span>
+                                    <span class="text-[10px] text-success number-animate" data-stat="oppRep1_won">22</span>
+                                    <span class="text-[10px] text-primary number-animate" data-stat="oppRep1_proc">32</span>
+                                    <span class="text-[10px] text-danger number-animate" data-stat="oppRep1_lost">10</span>
+                                </div>
+                                <div class="col-span-2 grid grid-cols-3 gap-1 text-center font-extrabold items-center border-l border-slate-100 pl-2">
+                                    <span class="text-[10px] text-slate-600 number-animate" data-stat="actRep1_calls">124</span>
+                                    <span class="text-[10px] text-slate-600 number-animate" data-stat="actRep1_emails">1.2k</span>
+                                    <span class="text-[10px] text-slate-600 number-animate" data-stat="actRep1_sms">450</span>
+                                </div>
+                            </div>
+
+                            <!-- Rep 2 Row -->
+                            <div class="px-4 py-3 grid grid-cols-12 items-center gap-2 list-row group">
+                                <div class="col-span-3 flex items-center gap-3">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Mike K" class="w-8 h-8 shadow-sm rounded-sm object-cover">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-extrabold text-slate-800 group-hover:text-primary transition-colors">Mike K.</span>
+                                        <span class="text-[8px] font-bold text-secondary uppercase tracking-widest">Account Exec</span>
+                                    </div>
+                                </div>
+                                <div class="col-span-4 grid grid-cols-4 gap-1 text-center font-extrabold items-center border-x border-slate-100 px-2">
+                                    <span class="text-xs text-slate-800 number-animate" data-stat="leadRep2">210</span>
+                                    <span class="text-[10px] text-slate-500 number-animate" data-stat="leadRep2_eng">110</span>
+                                    <span class="text-[10px] text-slate-500 number-animate" data-stat="leadRep2_trade">70</span>
+                                    <span class="text-[10px] text-slate-500 number-animate" data-stat="leadRep2_appt">30</span>
+                                </div>
+                                <div class="col-span-3 grid grid-cols-4 gap-1 text-center font-extrabold items-center pr-2">
+                                    <span class="text-xs text-slate-800 number-animate" data-stat="oppRep2_total">89</span>
+                                    <span class="text-[10px] text-success number-animate" data-stat="oppRep2_won">30</span>
+                                    <span class="text-[10px] text-primary number-animate" data-stat="oppRep2_proc">44</span>
+                                    <span class="text-[10px] text-danger number-animate" data-stat="oppRep2_lost">15</span>
+                                </div>
+                                <div class="col-span-2 grid grid-cols-3 gap-1 text-center font-extrabold items-center border-l border-slate-100 pl-2">
+                                    <span class="text-[10px] text-slate-600 number-animate" data-stat="actRep2_calls">188</span>
+                                    <span class="text-[10px] text-slate-600 number-animate" data-stat="actRep2_emails">980</span>
+                                    <span class="text-[10px] text-slate-600 number-animate" data-stat="actRep2_sms">320</span>
+                                </div>
+                            </div>
+
+                            <!-- Rep 3 Row -->
+                            <div class="px-4 py-3 grid grid-cols-12 items-center gap-2 list-row group">
+                                <div class="col-span-3 flex items-center gap-3">
+                                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Amy Lee" class="w-8 h-8 shadow-sm rounded-sm object-cover">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-extrabold text-slate-800 group-hover:text-primary transition-colors">Amy Lee</span>
+                                        <span class="text-[8px] font-bold text-secondary uppercase tracking-widest">Regional Rep</span>
+                                    </div>
+                                </div>
+                                <div class="col-span-4 grid grid-cols-4 gap-1 text-center font-extrabold items-center border-x border-slate-100 px-2">
+                                    <span class="text-xs text-slate-800 number-animate" data-stat="leadRep3">380</span>
+                                    <span class="text-[10px] text-slate-500 number-animate" data-stat="leadRep3_eng">200</span>
+                                    <span class="text-[10px] text-slate-500 number-animate" data-stat="leadRep3_trade">130</span>
+                                    <span class="text-[10px] text-slate-500 number-animate" data-stat="leadRep3_appt">50</span>
+                                </div>
+                                <div class="col-span-3 grid grid-cols-4 gap-1 text-center font-extrabold items-center pr-2">
+                                    <span class="text-xs text-slate-800 number-animate" data-stat="oppRep3_total">35</span>
+                                    <span class="text-[10px] text-success number-animate" data-stat="oppRep3_won">12</span>
+                                    <span class="text-[10px] text-primary number-animate" data-stat="oppRep3_proc">17</span>
+                                    <span class="text-[10px] text-danger number-animate" data-stat="oppRep3_lost">6</span>
+                                </div>
+                                <div class="col-span-2 grid grid-cols-3 gap-1 text-center font-extrabold items-center border-l border-slate-100 pl-2">
+                                    <span class="text-[10px] text-slate-600 number-animate" data-stat="actRep3_calls">156</span>
+                                    <span class="text-[10px] text-slate-600 number-animate" data-stat="actRep3_emails">850</span>
+                                    <span class="text-[10px] text-slate-600 number-animate" data-stat="actRep3_sms">280</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Outreach Activity -->
+        <section class="mb-6">
+            <div class="flex items-center gap-2 mb-3">
+                <div class="w-8 h-8 rounded-sm bg-success-light text-success flex items-center justify-center shadow-sm">
+                    <span class="material-symbols-rounded text-[18px]">campaign</span>
+                </div>
+                <h3 class="section-title">Outreach Activity</h3>
+            </div>
+
+            <div class="app-card p-5 bg-white overflow-hidden">
+                <div class="overflow-x-auto w-full pb-2">
+                    <div class="min-w-[950px] flex flex-col gap-2">
+                        <!-- Header Row -->
+                        <div class="px-4 pb-3 pt-1 grid grid-cols-12 items-end gap-2 border-b border-slate-100 mb-1">
+                            <div class="col-span-2 flex flex-col items-start justify-end">
+                                <span class="material-symbols-rounded text-slate-400 text-[18px] mb-1">badge</span>
+                                <p class="text-[8px] font-extrabold text-slate-800 uppercase tracking-widest">Representative</p>
+                            </div>
+                            <div class="col-span-2 text-center flex flex-col items-center justify-end">
+                                <span class="material-symbols-rounded text-indigo-500 text-[18px] mb-1">event_available</span>
+                                <p class="text-[8px] font-extrabold text-slate-800 uppercase tracking-widest">Appointments</p>
+                            </div>
+                            <div class="col-span-2 text-center flex flex-col items-center justify-end">
+                                <span class="material-symbols-rounded text-indigo-400 text-[18px] mb-1">co_present</span>
+                                <p class="text-[8px] font-extrabold text-slate-800 uppercase tracking-widest">Presentations</p>
+                            </div>
+                            
+                            <div class="col-span-4 flex flex-col items-center px-4 border-x border-slate-200">
+                                <div class="flex items-center gap-1 mb-2">
+                                    <span class="material-symbols-rounded text-success text-[16px]">call</span>
+                                    <span class="text-[9px] font-extrabold text-slate-800 uppercase tracking-widest">Calls</span>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 w-full">
+                                    <div class="soft-pill bg-success-light text-success text-[8px]">Total</div>
+                                    <div class="soft-pill bg-success-light text-success text-[8px]">Talk</div>
+                                    <div class="soft-pill bg-success-light text-success text-[8px]">VM</div>
+                                    <div class="soft-pill bg-success-light text-success text-[8px]">Missed</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-span-1 text-center flex flex-col items-center justify-end">
+                                <span class="material-symbols-rounded text-info text-[18px] mb-1">mail</span>
+                                <div class="text-[8px] font-extrabold text-slate-800 uppercase tracking-widest">Emails</div>
+                            </div>
+                            <div class="col-span-1 text-center flex flex-col items-center justify-end">
+                                <span class="material-symbols-rounded text-primary text-[18px] mb-1">sms</span>
+                                <div class="text-[8px] font-extrabold text-slate-800 uppercase tracking-widest">SMS</div>
+                            </div>
+                        </div>
+                        
+                        <div class="px-4 py-3 grid grid-cols-12 items-center gap-2 list-row group">
+                            <div class="col-span-2 flex items-center gap-3">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jane" class="w-8 h-8 shadow-sm rounded-sm object-cover">
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-extrabold text-slate-800 group-hover:text-primary transition-colors">Jane Doe</span>
+                                    <span class="text-[8px] font-bold text-secondary uppercase tracking-widest">Senior Rep</span>
+                                </div>
+                            </div>
+                            <div class="col-span-2 text-center font-extrabold text-slate-800 text-lg number-animate" data-stat="apptJD">18</div>
+                            <div class="col-span-2 text-center font-extrabold text-slate-800 text-lg number-animate" data-stat="presJD30">24</div>
+                            <div class="col-span-4 px-4">
+                                <div class="grid grid-cols-4 gap-2 w-full text-center font-extrabold items-center">
+                                    <span class="text-slate-800 text-xs number-animate" data-stat="comJD3">124</span>
+                                    <span class="text-success text-xs">98</span>
+                                    <span class="text-warning text-xs">12</span>
+                                    <span class="text-danger text-xs">14</span>
+                                </div>
+                            </div>
+                            <div class="col-span-1 text-center font-extrabold text-info text-xs number-animate" data-stat="comJD1">1,240</div>
+                            <div class="col-span-1 text-center font-extrabold text-primary text-xs number-animate" data-stat="smsJD">450</div>
+                        </div>
+                        
+                        <div class="px-4 py-3 grid grid-cols-12 items-center gap-2 list-row group">
+                            <div class="col-span-2 flex items-center gap-3">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Mike" class="w-8 h-8 shadow-sm rounded-sm object-cover">
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-extrabold text-slate-800 group-hover:text-primary transition-colors">Mike K.</span>
+                                    <span class="text-[8px] font-bold text-secondary uppercase tracking-widest">Account Exec</span>
+                                </div>
+                            </div>
+                            <div class="col-span-2 text-center font-extrabold text-slate-800 text-lg number-animate" data-stat="apptMK">12</div>
+                            <div class="col-span-2 text-center font-extrabold text-slate-800 text-lg number-animate" data-stat="presMK30">18</div>
+                            <div class="col-span-4 px-4">
+                                <div class="grid grid-cols-4 gap-2 w-full text-center font-extrabold items-center">
+                                    <span class="text-slate-800 text-xs number-animate" data-stat="comMK3">188</span>
+                                    <span class="text-success text-xs">142</span>
+                                    <span class="text-warning text-xs">22</span>
+                                    <span class="text-danger text-xs">24</span>
+                                </div>
+                            </div>
+                            <div class="col-span-1 text-center font-extrabold text-info text-xs number-animate" data-stat="comMK1">980</div>
+                            <div class="col-span-1 text-center font-extrabold text-primary text-xs number-animate" data-stat="smsMK">320</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Opportunities Overview -->
+        <section class="mb-6">
+            <div class="flex items-center gap-2 mb-3">
+                <div class="w-8 h-8 rounded-sm bg-warning-light text-warning flex items-center justify-center shadow-sm">
+                    <span class="material-symbols-rounded text-[18px]">trending_up</span>
+                </div>
+                <h3 class="section-title">Opportunities Overview</h3>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
+                
+                <!-- LEFT COLUMN: Dark Widget with Donut Chart -->
+                <div class="lg:col-span-4 xl:col-span-3 flex flex-col h-full">
+                    <p class="text-xs font-extrabold text-slate-800 pl-1 mb-2 invisible hidden lg:block">Opportunity by Status Placeholder</p>
+                    
+                    <div class="app-card border-none p-6 bg-slate-800 flex flex-col flex-1 relative overflow-hidden group shadow-[0_10px_20px_-5px_rgba(30,41,59,0.3)] hover:shadow-[0_15px_30px_-5px_rgba(30,41,59,0.4)] transition-all duration-300">
+                        <div class="absolute -right-16 -top-16 w-56 h-56 bg-primary/20 rounded-full blur-3xl pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
+                        <div class="absolute -left-16 -bottom-16 w-56 h-56 bg-success/10 rounded-full blur-3xl pointer-events-none transition-transform duration-700 group-hover:scale-110"></div>
+
+                        <h4 class="text-white font-extrabold text-lg mb-6 relative z-10 text-center sm:text-left">Opportunity by Status</h4>
+                        
+                        <div class="flex flex-col items-center gap-6 flex-1 relative z-10">
+                            <!-- Dynamic Donut Chart -->
+                            <div id="oppsDonutChart" class="relative w-40 h-40 rounded-full flex shrink-0 transition-all duration-1000 ease-out" style="background: conic-gradient(#10B981 0% 67.4%, #F59E0B 67.4% 77.2%, #94a3b8 77.2% 100%); box-shadow: 0 0 0 6px rgba(30,41,59,0.5), 0 10px 20px -5px rgba(0,0,0,0.5);">
+                                <div class="absolute inset-0 m-auto w-[110px] h-[110px] bg-slate-800 rounded-full flex items-center justify-center shadow-[inset_0_4px_12px_rgba(0,0,0,0.3)]">
+                                    <div class="text-center">
+                                        <span id="oppsTotalText" class="block text-white font-black text-3xl">184</span>
+                                        <span class="block text-slate-400 text-[9px] uppercase tracking-widest font-bold mt-1">Total Opps</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-2 w-full">
+                                <div class="flex items-center justify-between w-full p-2.5 rounded-sm hover:bg-slate-700/50 transition-colors border border-transparent hover:border-slate-600/50">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 rounded-sm bg-success shadow-[0_0_12px_rgba(16,185,129,0.6)]"></div>
+                                        <span class="text-xs font-bold text-slate-300">On Target</span>
+                                    </div>
+                                    <span class="text-lg font-black text-white number-animate" data-stat="onTarget">124</span>
+                                </div>
+                                <div class="flex items-center justify-between w-full p-2.5 rounded-sm hover:bg-slate-700/50 transition-colors border border-transparent hover:border-slate-600/50">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 rounded-sm bg-warning shadow-[0_0_12px_rgba(245,158,11,0.6)]"></div>
+                                        <span class="text-xs font-bold text-slate-300">At Risk</span>
+                                    </div>
+                                    <span class="text-lg font-black text-white number-animate" data-stat="atRisk">18</span>
+                                </div>
+                                <div class="flex items-center justify-between w-full p-2.5 rounded-sm hover:bg-slate-700/50 transition-colors border border-transparent hover:border-slate-600/50">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-3 h-3 rounded-sm bg-slate-400 shadow-[0_0_12px_rgba(148,163,184,0.6)]"></div>
+                                        <span class="text-xs font-bold text-slate-300">Graveyard</span>
+                                    </div>
+                                    <span class="text-lg font-black text-white number-animate" data-stat="graveyard">42</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: Pipeline Stages & Table -->
+                <div class="lg:col-span-8 xl:col-span-9 flex flex-col gap-4">
+                    <div>
+                        <p class="text-xs font-extrabold text-slate-800 pl-1 mb-2">Opportunity by Stages</p>
+                        <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
+                            <div class="app-card p-4 flex flex-col justify-center bg-white">
+                                <span class="text-[10px] font-bold text-slate-500 mb-1 uppercase">Revive</span>
+                                <span class="text-xl font-extrabold text-slate-800 mb-2 number-animate" data-stat="pipeRevive">12</span>
+                                <div class="h-1.5 w-full bg-slate-100 rounded-sm shadow-inner-soft"><div class="h-full bg-slate-400 rounded-sm w-[25%]"></div></div>
+                            </div>
+                            <div class="app-card p-4 flex flex-col justify-center bg-white">
+                                <span class="text-[10px] font-bold text-slate-500 mb-1 uppercase">25 Percent</span>
+                                <span class="text-xl font-extrabold text-slate-800 mb-2 number-animate" data-stat="pipe25">45</span>
+                                <div class="h-1.5 w-full bg-slate-100 rounded-sm shadow-inner-soft"><div class="h-full bg-info-light rounded-sm w-[50%]"></div></div>
+                            </div>
+                            <div class="app-card p-4 flex flex-col justify-center bg-white">
+                                <span class="text-[10px] font-bold text-slate-500 mb-1 uppercase">50 Percent</span>
+                                <span class="text-xl font-extrabold text-slate-800 mb-2 number-animate" data-stat="pipe50">28</span>
+                                <div class="h-1.5 w-full bg-slate-100 rounded-sm shadow-inner-soft"><div class="h-full bg-info rounded-sm w-[75%]"></div></div>
+                            </div>
+                            <div class="app-card p-4 flex flex-col justify-center bg-white">
+                                <span class="text-[10px] font-bold text-slate-500 mb-1 uppercase">75 Percent</span>
+                                <span class="text-xl font-extrabold text-slate-800 mb-2 number-animate" data-stat="pipe75">14</span>
+                                <div class="h-1.5 w-full bg-slate-100 rounded-sm shadow-inner-soft"><div class="h-full bg-primary rounded-sm w-[90%]"></div></div>
+                            </div>
+                            <div class="app-card p-4 flex flex-col justify-center bg-success-light border-success/30">
+                                <span class="text-[10px] font-bold text-success mb-1 uppercase">Closed Won</span>
+                                <span class="text-xl font-extrabold text-success mb-2 number-animate" data-stat="pipeWon">64</span>
+                                <div class="h-1.5 w-full bg-white rounded-sm"><div class="h-full bg-success rounded-sm w-full"></div></div>
+                            </div>
+                            <div class="app-card p-4 flex flex-col justify-center bg-danger-light border-danger/30">
+                                <span class="text-[10px] font-bold text-danger mb-1 uppercase">Closed Lost</span>
+                                <span class="text-xl font-extrabold text-danger mb-2 number-animate" data-stat="pipeLost">31</span>
+                                <div class="h-1.5 w-full bg-white rounded-sm"><div class="h-full bg-danger rounded-sm w-[40%]"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="text-xs font-extrabold text-slate-800 pl-1 mb-2">Stage Distribution by Sales Person</p>
+                        <div class="app-card p-5 bg-white">
+                            <div class="px-4 py-2 grid grid-cols-7 text-center items-center border-b border-slate-200 mb-2">
+                                <div class="text-left"><p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Sales Person</p></div>
+                                <div><p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Revive</p></div>
+                                <div><p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">25%</p></div>
+                                <div><p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">50%</p></div>
+                                <div><p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">75%</p></div>
+                                <div><p class="text-[9px] font-bold text-success uppercase tracking-widest">Closed Won</p></div>
+                                <div><p class="text-[9px] font-bold text-danger uppercase tracking-widest">Closed Lost</p></div>
+                            </div>
+                            
+                            <div class="flex flex-col gap-2">
+                                <div class="grid grid-cols-7 text-center items-center px-4 py-3 list-row group">
+                                    <div class="flex items-center gap-3 text-left">
+                                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jane" class="w-8 h-8 shadow-sm rounded-sm object-cover">
+                                        <span class="text-xs font-extrabold text-slate-800 group-hover:text-primary transition-colors">Jane Doe</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-600 number-animate" data-stat="sJD_rev">4</span>
+                                    <span class="text-xs font-bold text-slate-600 number-animate" data-stat="sJD_25">15</span>
+                                    <span class="text-xs font-bold text-slate-600 number-animate" data-stat="sJD_50">8</span>
+                                    <span class="text-xs font-bold text-slate-600 number-animate" data-stat="sJD_75">5</span>
+                                    <span class="text-xs font-extrabold text-success number-animate" data-stat="sJD_won">22</span>
+                                    <span class="text-xs font-extrabold text-danger number-animate" data-stat="sJD_lost">10</span>
+                                </div>
+                                <div class="grid grid-cols-7 text-center items-center px-4 py-3 list-row group">
+                                    <div class="flex items-center gap-3 text-left">
+                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Mike" class="w-8 h-8 shadow-sm rounded-sm object-cover">
+                                        <span class="text-xs font-extrabold text-slate-800 group-hover:text-primary transition-colors">Mike K.</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-600 number-animate" data-stat="sMK_rev">6</span>
+                                    <span class="text-xs font-bold text-slate-600 number-animate" data-stat="sMK_25">20</span>
+                                    <span class="text-xs font-bold text-slate-600 number-animate" data-stat="sMK_50">12</span>
+                                    <span class="text-xs font-bold text-slate-600 number-animate" data-stat="sMK_75">6</span>
+                                    <span class="text-xs font-extrabold text-success number-animate" data-stat="sMK_won">30</span>
+                                    <span class="text-xs font-extrabold text-danger number-animate" data-stat="sMK_lost">15</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Detailed View Modal (Small) -->
+    <div id="details-modal" class="fixed inset-0 z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeDetails()"></div>
+        <div class="relative bg-white w-full max-w-4xl rounded-sm shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col max-h-[85vh]" id="details-content">
+            <div class="flex justify-between items-center p-5 border-b border-slate-100">
+                <h2 class="text-xl font-extrabold text-slate-800" id="details-title">Details View</h2>
+                <button onclick="closeDetails()" class="w-8 h-8 rounded-sm bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 flex items-center justify-center transition-colors">
+                    <span class="material-symbols-rounded text-[18px]">close</span>
+                </button>
+            </div>
+            <div class="p-5 overflow-y-auto flex-1 bg-slate-50/50 rounded-b-sm">
+                <div class="flex flex-col gap-2" id="details-table-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Screen Report Modal -->
+    <div id="report-modal" class="fixed inset-0 z-[110] bg-slate-50 hidden opacity-0 transition-opacity duration-300 flex-col">
+        <!-- Header -->
+        <div class="bg-white px-6 py-4 flex justify-between items-center border-b border-slate-200 shadow-sm sticky top-0 z-10">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-sm bg-primary-light text-primary flex items-center justify-center">
+                    <span class="material-symbols-rounded text-[18px]">table_chart</span>
+                </div>
+                <div>
+                    <h2 class="text-lg font-extrabold text-slate-800 leading-tight">Sales Performance Report</h2>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">Comprehensive Export View</p>
+                </div>
+            </div>
+            <button onclick="closeReport()" class="w-8 h-8 rounded-sm bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 flex items-center justify-center transition-colors">
+                <span class="material-symbols-rounded text-[18px]">close</span>
+            </button>
+        </div>
+
+        <!-- Toolbar / Filters & Tabs -->
+        <div class="bg-white border-b border-slate-200 sticky top-[65px] z-10 shadow-sm flex flex-col">
+            <!-- Filters -->
+            <div class="px-6 py-3 flex flex-wrap gap-4 items-end border-b border-slate-100">
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest">Salesperson</label>
+                    <select id="report-rep-filter" onchange="applyReportFilters()" class="bg-slate-50 border border-slate-200 text-xs font-bold text-slate-700 rounded-sm px-3 py-2 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 min-w-[200px] shadow-inner-soft cursor-pointer">
+                        <option value="all">All Representatives</option>
+                        <option value="jane">Jane Doe</option>
+                        <option value="mike">Mike K.</option>
+                        <option value="amy">Amy Lee</option>
+                    </select>
+                </div>
+                
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest">Date Range</label>
+                    <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-sm px-3 py-2 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 shadow-inner-soft cursor-pointer">
+                        <span class="material-symbols-rounded text-slate-400 text-[16px]">calendar_today</span>
+                        <input type="text" id="report-date-range" placeholder="Select dates..." class="bg-transparent border-none p-0 text-xs font-bold text-slate-700 outline-none w-[160px] focus:ring-0 cursor-pointer">
+                    </div>
+                </div>
+
+                <button class="ml-auto flex items-center gap-2 px-5 py-2 bg-primary text-white font-bold text-xs rounded-sm shadow-sm hover:bg-indigo-600 transition-colors">
+                    <span class="material-symbols-rounded text-[16px]">download</span> Export CSV
+                </button>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="px-6 flex gap-6 mt-1">
+                <button class="report-tab-btn border-b-2 py-2.5 text-xs font-bold transition-colors border-primary text-primary" data-tab="leads" onclick="switchReportTab('leads')">Lead Details</button>
+                <button class="report-tab-btn border-b-2 py-2.5 text-xs font-bold transition-colors border-transparent text-slate-500 hover:text-slate-800" data-tab="opps" onclick="switchReportTab('opps')">Opportunity Details</button>
+                <button class="report-tab-btn border-b-2 py-2.5 text-xs font-bold transition-colors border-transparent text-slate-500 hover:text-slate-800" data-tab="activity" onclick="switchReportTab('activity')">Outbound Activity</button>
+            </div>
+        </div>
+
+        <!-- Table Content -->
+        <div class="flex-1 overflow-auto p-6 bg-slate-50/50">
+            <div class="bg-white border border-slate-200 rounded-sm shadow-sm overflow-hidden">
+                <table class="w-full text-left border-collapse min-w-[1000px]">
+                    <thead id="report-table-head" class="bg-slate-50 border-b border-slate-200">
+                        <!-- Populated dynamically via JS based on active tab -->
+                    </thead>
+                    <tbody id="report-table-body" class="divide-y divide-slate-100 text-xs">
+                        <!-- Populated via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dashboardData = {
+            'custom': {
+                execTotalLeads: '640', execTotalOpps: '82', execTotalPres: '210', execTotalCalls: '890', execTotalEmails: '1,540', execTotalSms: '540',
+                leads_lw: '280', leads_l4w: '1,420', leads_l8w: '2,900',
+                opps_lw: '48', opps_l4w: '154', opps_l8w: '310',
+                calls_lw: '480', calls_l4w: '1,840', calls_l8w: '3,500',
+                emails_lw: '1,120', emails_l4w: '4,210', emails_l8w: '8,050',
+                sms_lw: '380', sms_l4w: '1,250', sms_l8w: '2,400',
+                onTarget: '65', atRisk: '12', graveyard: '5', 
+                pipeRevive: '8', pipe25: '22', pipe50: '15', pipe75: '8', pipeWon: '35', pipeLost: '14',
+                leadRaw: '640', leadMQL: '150', leadSQL: '45', leadRep1: '210', leadRep2: '180', leadRep3: '250',
+                leadRep1_eng: '110', leadRep1_trade: '80', leadRep1_appt: '20',
+                leadRep2_eng: '90', leadRep2_trade: '60', leadRep2_appt: '30',
+                leadRep3_eng: '150', leadRep3_trade: '80', leadRep3_appt: '20',
+                oppRep1_total: '32', oppRep1_won: '14', oppRep1_proc: '12', oppRep1_lost: '6',
+                oppRep2_total: '28', oppRep2_won: '11', oppRep2_proc: '14', oppRep2_lost: '3',
+                oppRep3_total: '22', oppRep3_won: '10', oppRep3_proc: '7', oppRep3_lost: '5',
+                actRep1_calls: '340', actRep1_emails: '600', actRep1_sms: '210',
+                actRep2_calls: '250', actRep2_emails: '450', actRep2_sms: '180',
+                actRep3_calls: '300', actRep3_emails: '490', actRep3_sms: '150',
+                presJD30: '14', presMK30: '9', apptJD: '10', apptMK: '8', comJD3: '85', comMK3: '65', comJD1: '540', comMK1: '420', smsJD: '210', smsMK: '180',
+                sJD_rev: '2', sJD_25: '8', sJD_50: '5', sJD_75: '2', sJD_won: '14', sJD_lost: '6',
+                sMK_rev: '4', sMK_25: '9', sMK_50: '6', sMK_75: '3', sMK_won: '11', sMK_lost: '3'
+            }
+        };
+
+        // Report Mock Data with standardized dates for filtering
+        const reportData = [
+            { repId: "jane", repName: "Jane Doe", repImg: "women/44.jpg", leadName: "John Smith", company: "TechFlow Inc.", source: "Engagement", created: "2023-10-12", speedToLead: "2 Days", lastUpdated: "2023-10-28", oppCreated: "2023-10-15", oppDesc: "Enterprise License Upgrade", stage: "50 Percent", status: "On Target" },
+            { repId: "mike", repName: "Mike K.", repImg: "men/32.jpg", leadName: "Sarah Connor", company: "CyberDyne Systems", source: "Trade Show", created: "2023-10-14", speedToLead: "< 1 Day", lastUpdated: "2023-10-29", oppCreated: "2023-10-16", oppDesc: "Security Audit Q4", stage: "75 Percent", status: "Closed Won" },
+            { repId: "amy", repName: "Amy Lee", repImg: "women/68.jpg", leadName: "David Lee", company: "Nexus Corp", source: "Appointment", created: "2023-10-15", speedToLead: "3 Days", lastUpdated: "2023-10-25", oppCreated: "2023-10-20", oppDesc: "Cloud Migration Services", stage: "25 Percent", status: "At Risk" },
+            { repId: "jane", repName: "Jane Doe", repImg: "women/44.jpg", leadName: "Emily Chen", company: "Stark Industries", source: "Engagement", created: "2023-10-18", speedToLead: "1 Day", lastUpdated: "2023-10-22", oppCreated: "2023-10-19", oppDesc: "Hardware Integration Phase 1", stage: "Revive", status: "Graveyard" },
+            { repId: "mike", repName: "Mike K.", repImg: "men/32.jpg", leadName: "Michael Scott", company: "Dunder Mifflin", source: "Trade Show", created: "2023-10-20", speedToLead: "< 1 Day", lastUpdated: "2023-10-31", oppCreated: "2023-10-21", oppDesc: "Annual Paper Supply Contract", stage: "Closed Won", status: "Closed Won" },
+            { repId: "amy", repName: "Amy Lee", repImg: "women/68.jpg", leadName: "Bruce Wayne", company: "Wayne Enterprises", source: "Appointment", created: "2023-10-22", speedToLead: "1 Day", lastUpdated: "2023-10-30", oppCreated: "2023-10-25", oppDesc: "Global Tech Refresh", stage: "50 Percent", status: "On Target" },
+            { repId: "jane", repName: "Jane Doe", repImg: "women/44.jpg", leadName: "Clark Kent", company: "Daily Planet", source: "Trade Show", created: "2023-10-25", speedToLead: "4 Days", lastUpdated: "2023-10-29", oppCreated: "2023-10-28", oppDesc: "Media Server Implementation", stage: "Closed Lost", status: "Closed Lost" }
+        ];
+
+        // Mock Data for Outbound Activity Tab
+        const reportActivityData = [
+            { repId: "jane", repName: "Jane Doe", repImg: "women/44.jpg", date: "2023-10-28", type: "Call", prospect: "John Smith", outcome: "Talked - Highly Interested" },
+            { repId: "mike", repName: "Mike K.", repImg: "men/32.jpg", date: "2023-10-29", type: "Email", prospect: "Sarah Connor", outcome: "Sent Q4 Audit Proposal" },
+            { repId: "amy", repName: "Amy Lee", repImg: "women/68.jpg", date: "2023-10-25", type: "Presentation", prospect: "David Lee", outcome: "Completed Cloud Overview" },
+            { repId: "jane", repName: "Jane Doe", repImg: "women/44.jpg", date: "2023-10-22", type: "SMS", prospect: "Emily Chen", outcome: "No Response - Follow up later" },
+            { repId: "mike", repName: "Mike K.", repImg: "men/32.jpg", date: "2023-10-31", type: "Appointment", prospect: "Michael Scott", outcome: "Scheduled for Contract Signing" },
+            { repId: "amy", repName: "Amy Lee", repImg: "women/68.jpg", date: "2023-10-30", type: "Call", prospect: "Bruce Wayne", outcome: "Left Voicemail" },
+            { repId: "jane", repName: "Jane Doe", repImg: "women/44.jpg", date: "2023-10-29", type: "Email", prospect: "Clark Kent", outcome: "Sent specifications document" }
+        ];
+
+        let currentReportTab = 'leads'; // Default tab
+
+        function switchReportTab(tab) {
+            currentReportTab = tab;
+            
+            // Update active styling
+            document.querySelectorAll('.report-tab-btn').forEach(btn => {
+                if (btn.dataset.tab === tab) {
+                    btn.classList.add('border-primary', 'text-primary');
+                    btn.classList.remove('border-transparent', 'text-slate-500');
+                } else {
+                    btn.classList.remove('border-primary', 'text-primary');
+                    btn.classList.add('border-transparent', 'text-slate-500');
+                }
+            });
+            
+            applyReportFilters();
+        }
+
+        function formatDate(dateString) {
+            const options = { month: 'short', day: '2-digit', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+
+        function applyCustomDashFilter() {
+            updateDashboardData(dashboardData['custom']);
+        }
+
+        // Notification System Logic
+        function parseMetric(val) {
+            if (!val) return 0;
+            let str = val.toString().toLowerCase().replace(/,/g, '');
+            if (str.includes('k')) return parseFloat(str) * 1000;
+            return parseInt(str) || 0;
+        }
+
+        function checkPerformanceAlerts(data) {
+            const alerts = [];
+            const reps = [
+                { id: '1', name: 'Jane Doe', img: 'women/44.jpg' },
+                { id: '2', name: 'Mike K.', img: 'men/32.jpg' },
+                { id: '3', name: 'Amy Lee', img: 'women/68.jpg' }
+            ];
+
+            const metrics = [
+                { key: 'calls', name: 'Calls' },
+                { key: 'emails', name: 'Emails' },
+                { key: 'sms', name: 'SMS' }
+            ];
+
+            // Dynamically calculate targets based on 90% of the team average
+            metrics.forEach(m => {
+                let total = 0;
+                reps.forEach(rep => total += parseMetric(data[`actRep${rep.id}_${m.key}`]));
+                let average = total / reps.length;
+                let target = Math.floor(average * 0.9); 
+
+                reps.forEach(rep => {
+                    let val = parseMetric(data[`actRep${rep.id}_${m.key}`]);
+                    if (val < target && val > 0) {
+                        alerts.push({ rep: rep.name, img: rep.img, area: m.name, actual: val, target: target });
+                    }
+                });
+            });
+            
+            return alerts;
+        }
+
+        function renderAlerts(data) {
+            const alerts = checkPerformanceAlerts(data);
+            const listEl = document.getElementById('notif-list');
+            const countEl = document.getElementById('notif-count');
+            const badgeEl = document.getElementById('notif-badge');
+            
+            if (alerts.length > 0) {
+                countEl.textContent = `${alerts.length} Alert${alerts.length > 1 ? 's' : ''}`;
+                badgeEl.textContent = alerts.length;
+                badgeEl.classList.remove('hidden');
+                
+                listEl.innerHTML = alerts.map(a => `
+                    <div class="p-3 bg-danger-light/40 border border-danger-light/60 rounded-sm flex gap-3 items-start transition-colors hover:bg-danger-light/60">
+                        <img src="https://randomuser.me/api/portraits/${a.img}" class="w-8 h-8 rounded-sm object-cover shadow-sm border border-white">
+                        <div class="flex-1">
+                            <p class="text-xs font-extrabold text-slate-800">${a.rep}</p>
+                            <p class="text-[10px] text-danger font-bold mt-0.5 uppercase tracking-wide">Poor ${a.area} Volume</p>
+                            <p class="text-[9px] text-slate-600 mt-1">Current: <span class="font-bold text-slate-800">${a.actual}</span> <span class="text-slate-300 mx-1">|</span> Target: <span class="font-bold text-slate-800">${a.target}</span></p>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                countEl.textContent = `0 Alerts`;
+                badgeEl.classList.add('hidden');
+                listEl.innerHTML = `
+                    <div class="p-6 text-center text-slate-500 flex flex-col items-center">
+                        <span class="material-symbols-rounded text-3xl mb-2 text-success/50">check_circle</span>
+                        <p class="text-xs font-bold text-slate-600">All reps are hitting targets!</p>
+                    </div>
+                `;
+            }
+        }
+
+        function toggleNotifications() {
+            document.getElementById('notif-dropdown').classList.toggle('hidden');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const wrapper = document.getElementById('notification-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                document.getElementById('notif-dropdown').classList.add('hidden');
+            }
+        });
+
+        function updateDashboardData(data) {
+            // Re-calculate and render alerts whenever data changes
+            renderAlerts(data);
+            
+            document.querySelectorAll('.number-animate').forEach(el => el.style.opacity = '0');
+            
+            setTimeout(() => {
+                document.querySelectorAll('[data-stat]').forEach(el => {
+                    const key = el.getAttribute('data-stat');
+                    if (data[key]) el.textContent = data[key];
+                });
+
+                const onTarget = parseInt(data.onTarget.replace(/,/g, '')) || 0;
+                const atRisk = parseInt(data.atRisk.replace(/,/g, '')) || 0;
+                const graveyard = parseInt(data.graveyard.replace(/,/g, '')) || 0;
+                const totalOpps = onTarget + atRisk + graveyard;
+                
+                const totalEl = document.getElementById('oppsTotalText');
+                if (totalEl) totalEl.textContent = totalOpps;
+                
+                if (totalOpps > 0) {
+                    const pTarget = (onTarget / totalOpps) * 100;
+                    const pRisk = (atRisk / totalOpps) * 100;
+                    
+                    const stop1 = pTarget;
+                    const stop2 = pTarget + pRisk;
+                    
+                    const donut = document.getElementById('oppsDonutChart');
+                    if (donut) {
+                        donut.style.background = `conic-gradient(#10B981 0% ${stop1}%, #F59E0B ${stop1}% ${stop2}%, #94a3b8 ${stop2}% 100%)`;
+                    }
+                }
+                
+                document.querySelectorAll('.number-animate').forEach(el => el.style.opacity = '1');
+            }, 300);
+        }
+
+        // Drill-Down Modal Logic
+        function showDetails(title, type, context) {
+            document.getElementById('details-title').textContent = title;
+            let listHTML = '';
+            for(let i=0; i<6; i++) {
+                listHTML += `
+                <div class="list-row px-5 py-3 flex justify-between items-center bg-white cursor-pointer shadow-sm">
+                    <div class="flex items-center gap-4">
+                        <div class="w-8 h-8 rounded-sm bg-primary-light text-primary flex items-center justify-center font-bold text-[10px]">A0${i+1}</div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">Record ACC-0${i+1}</p>
+                            <p class="text-[9px] font-bold text-secondary uppercase">${context}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <div class="text-right">
+                            <p class="text-[9px] font-bold text-secondary uppercase">Velocity</p>
+                            <p class="font-extrabold text-primary">${Math.floor(Math.random()*20+80)}%</p>
+                        </div>
+                        <span class="px-2.5 py-0.5 bg-success-light text-success text-[9px] font-extrabold rounded-sm uppercase">Active</span>
+                    </div>
+                </div>`;
+            }
+            document.getElementById('details-table-container').innerHTML = listHTML;
+            const modal = document.getElementById('details-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); document.getElementById('details-content').classList.remove('scale-95'); }, 10);
+        }
+
+        function closeDetails() {
+            document.getElementById('details-modal').classList.add('opacity-0');
+            document.getElementById('details-content').classList.add('scale-95');
+            setTimeout(() => document.getElementById('details-modal').classList.add('hidden'), 300);
+        }
+
+        function openReport() {
+            renderReport();
+            const modal = document.getElementById('report-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('opacity-0'); }, 10);
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeReport() {
+            const modal = document.getElementById('report-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+            document.body.style.overflow = ''; 
+        }
+
+        function getStatusColor(status) {
+            switch(status) {
+                case 'Closed Won': return 'bg-success-light text-success';
+                case 'Closed Lost': return 'bg-danger-light text-danger';
+                case 'On Target': return 'bg-primary-light text-primary';
+                case 'At Risk': return 'bg-warning-light text-warning';
+                default: return 'bg-slate-100 text-slate-600';
+            }
+        }
+
+        function getActivityBadge(type) {
+            switch(type) {
+                case 'Call': return '<span class="inline-flex items-center gap-1 text-success bg-success-light px-2 py-0.5 rounded-sm"><span class="material-symbols-rounded text-[14px]">call</span> Call</span>';
+                case 'Email': return '<span class="inline-flex items-center gap-1 text-info bg-info-light px-2 py-0.5 rounded-sm"><span class="material-symbols-rounded text-[14px]">mail</span> Email</span>';
+                case 'SMS': return '<span class="inline-flex items-center gap-1 text-fuchsia-600 bg-fuchsia-100 px-2 py-0.5 rounded-sm"><span class="material-symbols-rounded text-[14px]">sms</span> SMS</span>';
+                case 'Presentation': return '<span class="inline-flex items-center gap-1 text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-sm"><span class="material-symbols-rounded text-[14px]">co_present</span> Presentation</span>';
+                case 'Appointment': return '<span class="inline-flex items-center gap-1 text-warning bg-warning-light px-2 py-0.5 rounded-sm"><span class="material-symbols-rounded text-[14px]">event_available</span> Appointment</span>';
+                default: return `<span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-sm">${type}</span>`;
+            }
+        }
+
+        function applyReportFilters() {
+            const repFilter = document.getElementById('report-rep-filter').value;
+            const dateInput = document.getElementById('report-date-range')._flatpickr;
+            const selectedDates = dateInput ? dateInput.selectedDates : [];
+
+            // Filter Leads/Opps
+            const filteredData = reportData.filter(row => {
+                let matchRep = repFilter === 'all' || row.repId === repFilter;
+                let matchDate = true;
+                if (selectedDates.length === 2) {
+                    const rowDate = new Date(row.created);
+                    rowDate.setHours(0,0,0,0);
+                    const start = new Date(selectedDates[0]);
+                    start.setHours(0,0,0,0);
+                    const end = new Date(selectedDates[1]);
+                    end.setHours(23,59,59,999);
+                    matchDate = rowDate >= start && rowDate <= end;
+                }
+                return matchRep && matchDate;
+            });
+
+            // Filter Activity Data
+            const filteredActivity = reportActivityData.filter(row => {
+                let matchRep = repFilter === 'all' || row.repId === repFilter;
+                let matchDate = true;
+                if (selectedDates.length === 2) {
+                    const rowDate = new Date(row.date);
+                    rowDate.setHours(0,0,0,0);
+                    const start = new Date(selectedDates[0]);
+                    start.setHours(0,0,0,0);
+                    const end = new Date(selectedDates[1]);
+                    end.setHours(23,59,59,999);
+                    matchDate = rowDate >= start && rowDate <= end;
+                }
+                return matchRep && matchDate;
+            });
+
+            renderReport(filteredData, filteredActivity);
+        }
+
+        function renderReport(dataToRender = reportData, activityDataToRender = reportActivityData) {
+            const thead = document.getElementById('report-table-head');
+            const tbody = document.getElementById('report-table-body');
+            let headHtml = '';
+            let bodyHtml = '';
+            
+            // Build Headers based on current tab
+            if (currentReportTab === 'leads') {
+                headHtml = `
+                    <tr>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest border-r border-slate-200">Salesperson</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Lead Name</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Company</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Lead Source</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Created Date</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Speed to Lead</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Last Updated</th>
+                    </tr>
+                `;
+            } else if (currentReportTab === 'opps') {
+                headHtml = `
+                    <tr>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest border-r border-slate-200">Salesperson</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Lead Name</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Company</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Opp Created</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Opp Description</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest text-center">Stage</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest text-center">Status</th>
+                    </tr>
+                `;
+            } else if (currentReportTab === 'activity') {
+                headHtml = `
+                    <tr>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest border-r border-slate-200">Salesperson</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Date</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Activity Type</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Prospect Name</th>
+                        <th class="px-5 py-3 text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Outcome / Notes</th>
+                    </tr>
+                `;
+            }
+
+            thead.innerHTML = headHtml;
+            
+            // Build Rows based on current tab
+            const dataTarget = currentReportTab === 'activity' ? activityDataToRender : dataToRender;
+
+            if(dataTarget.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="px-5 py-8 text-center text-slate-500 font-bold">No records match your filters.</td></tr>`;
+                return;
+            }
+
+            dataTarget.forEach(row => {
+                let sharedCol = `
+                    <td class="px-5 py-3 border-r border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <img src="https://randomuser.me/api/portraits/${row.repImg}" alt="${row.repName}" class="w-6 h-6 rounded-sm shadow-sm object-cover">
+                            <span class="font-extrabold text-slate-800">${row.repName}</span>
+                        </div>
+                    </td>
+                `;
+
+                if (currentReportTab === 'leads') {
+                    bodyHtml += `
+                        <tr class="hover:bg-slate-50 transition-colors group">
+                            ${sharedCol}
+                            <td class="px-5 py-3 font-bold text-slate-700">${row.leadName}</td>
+                            <td class="px-5 py-3 text-slate-600 font-medium">${row.company}</td>
+                            <td class="px-5 py-3">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-sm bg-slate-100 text-[10px] font-bold text-slate-600 uppercase">
+                                    ${row.source}
+                                </span>
+                            </td>
+                            <td class="px-5 py-3 text-slate-500">${formatDate(row.created)}</td>
+                            <td class="px-5 py-3 text-slate-700 font-extrabold">${row.speedToLead}</td>
+                            <td class="px-5 py-3 text-slate-500">${formatDate(row.lastUpdated)}</td>
+                        </tr>
+                    `;
+                } else if (currentReportTab === 'opps') {
+                    bodyHtml += `
+                        <tr class="hover:bg-slate-50 transition-colors group">
+                            ${sharedCol}
+                            <td class="px-5 py-3 font-bold text-slate-700">${row.leadName}</td>
+                            <td class="px-5 py-3 text-slate-600 font-medium">${row.company}</td>
+                            <td class="px-5 py-3 text-slate-500">${formatDate(row.oppCreated)}</td>
+                            <td class="px-5 py-3 font-medium text-slate-700 max-w-xs truncate" title="${row.oppDesc}">${row.oppDesc}</td>
+                            <td class="px-5 py-3 text-center font-bold text-slate-600">${row.stage}</td>
+                            <td class="px-5 py-3 text-center">
+                                <span class="soft-pill ${getStatusColor(row.status)} inline-block min-w-[80px]">${row.status}</span>
+                            </td>
+                        </tr>
+                    `;
+                } else if (currentReportTab === 'activity') {
+                    bodyHtml += `
+                        <tr class="hover:bg-slate-50 transition-colors group">
+                            ${sharedCol}
+                            <td class="px-5 py-3 text-slate-500 font-medium">${formatDate(row.date)}</td>
+                            <td class="px-5 py-3 font-extrabold text-[10px] uppercase tracking-wide">
+                                ${getActivityBadge(row.type)}
+                            </td>
+                            <td class="px-5 py-3 font-bold text-slate-700">${row.prospect}</td>
+                            <td class="px-5 py-3 text-slate-600 font-medium">${row.outcome}</td>
+                        </tr>
+                    `;
+                }
+            });
+            
+            tbody.innerHTML = bodyHtml;
+        }
+
+        window.onload = () => {
+            // Initialize Flatpickr for Dashboard Range
+            flatpickr("#dash-date-range", {
+                mode: "range",
+                dateFormat: "M d, Y",
+                defaultDate: ["Oct 01, 2023", "Oct 31, 2023"],
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        applyCustomDashFilter();
+                    }
+                }
+            });
+
+            // Initialize Flatpickr for Report Modal
+            flatpickr("#report-date-range", {
+                mode: "range",
+                dateFormat: "M d, Y",
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        applyReportFilters();
+                    }
+                }
+            });
+            
+            applyCustomDashFilter();
+        };
+    </script>
+</body>
+</html>
